@@ -1,4 +1,4 @@
-## Installtion
+## Installation
 ```
 cd projectDir
 yarn install
