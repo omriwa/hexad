@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { User, Book } from './components/index'
-import { bookKeys as BookKeys, IBook, libraryFunction } from './types';
+import { bookKeys, bookKeys as BookKeys, IBook, libraryFunction } from './types';
 
 interface IAppState {
   availableBooks: IBook[];
@@ -39,6 +39,23 @@ function App() {
     }
   });
 
+  const getNumberOfBorrowBooks = (keys: bookKeys[],book?: IBook) => {
+    let borrowBooks = 0;
+
+    if (book) {
+      books.takenBooks.books.filter(b => b.id == book.id).forEach(book => {
+        keys.forEach(key => borrowBooks += book[key])
+      });
+    }
+    else {
+      books.takenBooks.books.forEach(book => {
+        keys.forEach(key => borrowBooks += book[key])
+      });
+    }
+
+    return borrowBooks;
+  }
+
   const updateBooks = (bookId: number, key: BookKeys, takeBook: boolean) => {
     const { availableBooks, takenBooks: { books: userBooks } } = books;
     const booksCopy: IAppState = { takenBooks: { books: [...userBooks] }, availableBooks: [...availableBooks] };
@@ -52,9 +69,23 @@ function App() {
     setBooks(booksCopy);
   }
 
+  const validateAction = (book: IBook,takeCopy?: boolean) => {
+    if (book.numberOfOrigin > 0 && getNumberOfBorrowBooks(['numberOfCopies', 'numberOfOrigin']) < 2) {
+      if (takeCopy) {
+        return getNumberOfBorrowBooks(['numberOfCopies'], book) < 1;
+      }
+      else {
+        return true
+      }
+    }
+    else {
+      return false;
+    }
+  }
+
   const takeOriginalBook: libraryFunction = (book: IBook) => {
     // decrease number of original books
-    if (book.numberOfOrigin > 0) {
+    if (validateAction(book)) {
       updateBooks(book.id, 'numberOfOrigin',true);
     }
   }
@@ -68,7 +99,7 @@ function App() {
 
   const takeCopyBook: libraryFunction = (book: IBook) => {
     // decrease number of original books
-    if (book.numberOfCopies > 0) {
+    if (validateAction(book,true)) {
       updateBooks(book.id, 'numberOfCopies',true);
     }
   }
