@@ -1,9 +1,14 @@
 import React,{ FC } from "react";
-import { IBook } from "../../types/index"
+import { IBook, voidFunction } from "../../types/index"
 
-interface IBookProps extends IBook {}
+interface IBookProps extends IBook {
+    takeOriginalBook?: voidFunction
+    returnOriginalBook?: voidFunction
+    takeCopyBook?: voidFunction
+    returnCopyBook?: voidFunction
+}
 
-export const Book: FC<IBookProps> = ({bookTitle,numberOfCopies,numberOfOrigin }) => <div>
+export const Book: FC<IBookProps> = ({bookTitle,numberOfCopies,numberOfOrigin,takeOriginalBook,returnOriginalBook,takeCopyBook,returnCopyBook }) => <div>
     <h4>{bookTitle}</h4>
     <div>
         <ul>
@@ -14,5 +19,19 @@ export const Book: FC<IBookProps> = ({bookTitle,numberOfCopies,numberOfOrigin })
                 <span>Number of copies</span> : {numberOfCopies}
             </li>
         </ul>
+    </div>
+    <div>
+        {
+            takeOriginalBook && <button onClick={takeOriginalBook}>Take original book</button>
+        }
+        {
+            returnOriginalBook && <button onClick={returnOriginalBook}>Return orignal book</button>
+        }
+        {
+            takeCopyBook && <button onClick={takeCopyBook}>Take copy book</button>
+        }
+        {
+            returnCopyBook && <button onClick={returnCopyBook}>Return copy book</button>
+        }
     </div>
 </div>
