@@ -10,8 +10,8 @@ beforeEach(() => {
         id: 1,
         numberOfCopies: 2,
         numberOfOrigin: 3,
-        takeCopyBook: jest.fn,
-        takeOriginalBook: jest.fn
+        takeCopyBook: () => console.log('takeCopyBook'),
+        takeOriginalBook: () => console.log('takeOriginalBook')
     }
 })
 
@@ -32,21 +32,21 @@ test('renders book card with props', () => {
 test('should click on take original book', () => {
     const { getByText } = render(<Book {...bookProp} />);
     const takeOriginalBookButton = getByText('Take original book');
-    jest.spyOn(bookProp, 'takeOriginalBook');
+    jest.spyOn(console,'log');
 
     fireEvent.click(takeOriginalBookButton)
 
     expect(takeOriginalBookButton).toBeInTheDocument();
-    expect(bookProp.takeOriginalBook).toBeCalled();
+    expect(console.log).toBeCalled();
 });
 
 test('should click on take copy book', () => {
     const { getByText } = render(<Book {...bookProp} />);
     const takeCopyBookButton = getByText('Take copy book');
-    jest.spyOn(bookProp, 'takeCopyBook').mockImplementation(jest.fn);
+    jest.spyOn(console,'log');
     
     fireEvent.click(takeCopyBookButton)
 
     expect(takeCopyBookButton).toBeInTheDocument();
-    expect(bookProp.takeCopyBook).toBeCalled();
+    expect(console.log).toBeCalled();
 });
