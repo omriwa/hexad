@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { User, Book } from './components/index'
 import { bookKeys, bookKeys as BookKeys, IBook, libraryFunction } from './types';
 
-interface IAppState {
+export interface IAppState {
   availableBooks: IBook[];
   takenBooks: {
     books: IBook[];

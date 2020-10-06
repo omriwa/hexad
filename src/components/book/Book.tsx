@@ -8,7 +8,7 @@ export interface IBookProps extends IBook {
     returnCopyBook?: voidFunction
 }
 
-export const Book: FC<IBookProps> = ({bookTitle,numberOfCopies,numberOfOrigin,takeOriginalBook,returnOriginalBook,takeCopyBook,returnCopyBook }) => <div>
+export const Book: FC<IBookProps> = ({id,bookTitle,numberOfCopies,numberOfOrigin,takeOriginalBook,returnOriginalBook,takeCopyBook,returnCopyBook }) => <div>
     <h4>{bookTitle}</h4>
     <div>
         <ul>
